@@ -16,7 +16,7 @@ image: mosaicml/pytorch:1.13.1_cu117-python3.10-ubuntu20.04
 integrations:
 - integration_type: git_repo
   git_repo: dblalock/examples
-  git_branch: dev # use your branch
+  git_branch: davis/dev # use your branch
   # git_commit: # OR use your commit hash
   pip_install: -e .[bert]
 command: |
