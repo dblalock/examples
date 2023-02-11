@@ -9,7 +9,7 @@ grad_accum: auto           # Amount of gradient accumulation, 'auto' means Compo
 # data_cache: null
 #
 # Option 2: stream the data from s3
-data_source: mosaicml-internal-dataset-ade20k/mds/2/
+data_source: s3://mosaicml-internal-dataset-ade20k/mds/2/
 data_cache: /tmp/mds-cache/
 
 # Model
