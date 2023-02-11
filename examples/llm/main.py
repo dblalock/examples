@@ -6,6 +6,7 @@ import sys
 import warnings
 
 from composer import Trainer
+from composer.core import Evaluator
 from composer.utils import reproducibility
 from omegaconf import OmegaConf as om
 
@@ -47,8 +48,9 @@ def main(cfg):
     # using 'cuda' vs. 'cuda:id' is tricky and can lead to common user errors
     # when multiple GPUs are available.
     # Also 'meta' is only valid when using FSDP
-    assert cfg.model.device in ['meta', 'cpu']
-    if fsdp_config is None and cfg.model.device == 'meta':
+    device = cfg.model.get('device', 'cpu')
+    assert device in ['meta', 'cpu']
+    if fsdp_config is None and device == 'meta':
         print(
             "Using init device `cfg.model.device='meta'` is only valid when using FSDP! "
             "Reverting to `cfg.model.device='cpu'`.")
@@ -70,8 +72,11 @@ def main(cfg):
     print('Building eval loader...')
     evaluators = []
     if 'eval_loader' in cfg:
-        eval_loader = build_dataloader(cfg.eval_loader,
-                                       cfg.device_eval_batch_size)
+        eval_loader = Evaluator(label='eval',
+                                dataloader=build_dataloader(
+                                    cfg.eval_loader,
+                                    cfg.device_eval_batch_size),
+                                metric_names=list(model.train_metrics.keys()))
         evaluators.append(eval_loader)
 
     if 'icl_tasks' in cfg:
