@@ -37,7 +37,7 @@ train_dataset:
 
 # Validation Dataset Parameters
 eval_dataset:
-  is_streaming: is_streaming         # If true, use streaming dataset
+  is_streaming: ${is_streaming}      # If true, use streaming dataset
   path: ${data_source}               # Path to S3 bucket if streaming, otherwise path to local data directory
   local: ${data_cache}               # Local cache when streaming data
   base_size: 512                     # Initial size of the image and target before other augmentations
